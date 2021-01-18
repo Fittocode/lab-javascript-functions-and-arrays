@@ -134,6 +134,7 @@ console.log(uniquifyArray(wordsUnique))
 
 // Finding Elements
 var wordsFind = [
+  'joe',
   'machine',
   'subset',
   'trouble',
@@ -143,6 +144,28 @@ var wordsFind = [
   'truth',
   'disobedience'
 ];
+
+comparativeWord = "";
+
+function doesWordExist(wordsFind, comparativeWord) {
+  if (wordsFind.length == 0) {
+    return false
+  } else if (wordsFind.length == 1 && wordsFind[0] == comparativeWord) {
+    return true
+  } else {
+    for(i = 0; i < wordsFind.length; i++) {
+      if (wordsFind[i] == comparativeWord) {
+        return true
+    } else if (wordsFind[i] == wordsFind[wordsFind.length-1]) {
+        return false
+    } else {
+        continue;
+    } 
+    }
+  }
+}  
+
+console.log(doesWordExist(wordsFind, "truth"))
 
 // Counting Repetion
 var wordsCount = [
@@ -158,6 +181,23 @@ var wordsCount = [
   'disobedience',
   'matter'
 ];
+
+function howManyTimes(wordsCount, comparativeWord) {
+  noOfTimes = 0;
+  if (wordsCount.length == 0) {
+    return false
+  } else {
+    for(i = 0; i < wordsCount.length; i++) {
+      if (wordsCount[i] == comparativeWord) {
+        noOfTimes += 1
+      }
+    }
+  }
+  return noOfTimes
+}
+
+console.log(howManyTimes(wordsCount, "matter"))
+
 // Bonus Quest
 
 var matrix = [
@@ -182,3 +222,86 @@ var matrix = [
   [20, 73, 35, 29, 78, 31, 90, 1, 74, 31, 49, 71, 48, 86, 81, 16, 23, 57, 5, 54],
   [1, 70, 54, 71, 83, 51, 54, 69, 16, 92, 33, 48, 61, 43, 52, 1, 89, 19, 67, 48]
 ];
+
+function returnAllHorizontalArrays(testMatrix) {
+  let arrayToReturn = []
+  for (let row = 0; row < testMatrix.length; row++) {
+    for (let verticalRow = 0; verticalRow < testMatrix.length-3; verticalRow++) {
+      let newArray = [];
+      for (let columnP = 0; columnP < 4; columnP++) {
+        newArray.push(testMatrix[row][columnP + verticalRow])
+      }
+      arrayToReturn.push(newArray)
+    }
+  }
+  return arrayToReturn
+}
+
+function returnAllVerticalArrays(testMatrix) {
+  let arrayToReturn = []
+  for(let row = 0; row < testMatrix.length-3; row++) {
+    for (let rowP = 0; rowP < testMatrix[row].length; rowP++) {
+      let newArray = [];
+      for (let verticalRow = 0; verticalRow < 4; verticalRow++) {
+        newArray.push(testMatrix[verticalRow + row][rowP])
+      }
+      arrayToReturn.push(newArray);
+    }
+  }
+  return arrayToReturn;
+}
+
+function concatArrays(returnAllHorizontalArrays, returnAllVerticalArrays) {
+  let newArray = returnAllHorizontalArrays(matrix).concat(returnAllVerticalArrays(matrix))
+  return newArray
+}
+
+let newArray = concatArrays(returnAllHorizontalArrays, returnAllVerticalArrays)
+
+function splitAndSumNumbers(newArray) {
+  let arrayOfSums = []
+  for(let i = 0; i < newArray.length; i++) {
+    let sumOfSplitNumbers = 1;
+    for(let j = 0; j < newArray[i].length; j++) {
+      sumOfSplitNumbers *= newArray[i][j];
+    }
+    arrayOfSums.push(sumOfSplitNumbers)
+  }
+  return arrayOfSums;
+}
+
+let arrayOfSums = splitAndSumNumbers(newArray)
+
+function findGreatestProduct(arrayOfSums) {
+    let greatestProduct = 0;
+    for(i = 0; i < arrayOfSums.length; i++) {
+      if (arrayOfSums[i] > greatestProduct) {
+        greatestProduct = arrayOfSums[i]
+      } else {
+        continue;
+      }
+    }
+    return greatestProduct;
+}
+
+let greatestArray = []
+
+greatestArray = newArray[arrayOfSums.indexOf(findGreatestProduct(arrayOfSums))]
+
+
+function greatestProduct(matrix) {
+  let finalNumbersArray = returnAllHorizontalArrays(matrix).concat(returnAllVerticalArrays(matrix))
+  let finalProductsArray = splitAndSumNumbers(finalNumbersArray)
+  let winnerProduct = findGreatestProduct(finalProductsArray)
+  return winnerProduct 
+}
+
+console.log(greatestProduct(matrix))
+
+
+// 1. First iteration in loop creates 2 new arrays (verticalArray and horizontalArray)
+// 2. The products of those arrays are compared, array with highest product wins and number is assigned to variable highestProduct. Its array is assigned to variable highestProductsArray. 
+// 3. Steps 1 and 2 are repeated for next iteration
+// 4. That iterations's highest product is compared to highestProduct. If higher, highestProduct is overwritten with new highest product and highestProductsArray is overwritten with associated array.
+// 5. Repeat to end of matrix. 
+// 6. Return highestProduct and highestProductsArray.
