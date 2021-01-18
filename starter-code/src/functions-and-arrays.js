@@ -37,15 +37,6 @@ function findLongestWord(words) {
 
 console.log(findLongestWord(words))
 
-// 1. Iterate through list of words
-// 2. Count first word's length, put word into variable
-// 3. Count second word's length, compare amount to length of first word in variable. If longer overwrite with new word, if shorter skip
-// 4. Count third word's length, compare amount to length of word in variable. If longer overwrite with new word, if shorter skip
-// 5. repeat to end of array
-// 6. return word that remains
-
-// Calculating a Sum
-
 var numbers = [6, 12, 1, 18, 13, 16, 2, 1, 8, 10];
 
 function sumArray(numbers) {
